@@ -22,36 +22,44 @@ export async function connectValueChainWallet(): Promise<string> {
 }
 
 // Mock portfolio fetch
-export async function fetchPortfolio(address: string): Promise<Portfolio> {
+export async function fetchPortfolio(address: string, ethBalance?: { formatted: string; symbol: string }): Promise<Portfolio> {
   await new Promise(resolve => setTimeout(resolve, 600));
   
+  const realEthAmount = ethBalance ? parseFloat(ethBalance.formatted) : 2.42;
+  const ethPrice = 2450; // Mock ETH price
+  const ethValueUsd = realEthAmount * ethPrice;
+  
+  const btcValueUsd = 16890;
+  const sosoValueUsd = 2001;
+  const totalValueUsd = btcValueUsd + ethValueUsd + sosoValueUsd;
+
   return {
-    totalValueUsd: 24831.50,
+    totalValueUsd,
     changeUsdToday: 583.20,
     changePctToday: 2.4,
     holdings: [
       {
+        asset: "Ethereum",
+        ticker: "ETH",
+        amount: realEthAmount,
+        valueUsd: ethValueUsd,
+        allocationPct: Math.round((ethValueUsd / totalValueUsd) * 100),
+        priceChange: 3.5
+      },
+      {
         asset: "Bitcoin",
         ticker: "BTC",
         amount: 0.185,
-        valueUsd: 16890,
-        allocationPct: 68,
+        valueUsd: btcValueUsd,
+        allocationPct: Math.round((btcValueUsd / totalValueUsd) * 100),
         priceChange: 2.1
-      },
-      {
-        asset: "Ethereum",
-        ticker: "ETH",
-        amount: 2.42,
-        valueUsd: 5940,
-        allocationPct: 24,
-        priceChange: 3.5
       },
       {
         asset: "SoSoValue",
         ticker: "SOSO",
         amount: 8200,
-        valueUsd: 2001,
-        allocationPct: 8,
+        valueUsd: sosoValueUsd,
+        allocationPct: Math.round((sosoValueUsd / totalValueUsd) * 100),
         priceChange: -0.5
       }
     ]

@@ -9,10 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.76",
+    "@ai-sdk/react": "^3.0.179",
     "@anthropic-ai/sdk": "^0.95.2",
     "@reown/appkit": "^1.8.19",
     "@reown/appkit-adapter-wagmi": "^1.8.19",
     "@tanstack/react-query": "^5.100.10",
+    "ai": "^6.0.177",
     "chart.js": "^4.5.1",
     "next": "16.2.6",
     "react": "19.2.4",

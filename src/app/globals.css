@@ -360,3 +360,40 @@ body::before {
 /* CHART AREA */
 #priceChart { width: 100%; }
 .chart-wrap { position: relative; width: 100%; height: 200px; }
+
+/* LOADING SHIMMER */
+.skeleton-text {
+  color: transparent !important;
+  background: linear-gradient(90deg, rgba(127,32,32,0.05) 25%, rgba(127,32,32,0.15) 50%, rgba(127,32,32,0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  display: inline-block;
+  min-width: 40px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* EXECUTE BUTTON */
+.execute-btn {
+  background: rgba(134,155,126,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(134,155,126,0.3);
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.execute-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--bg);
+}
+.execute-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -15,7 +15,9 @@ export interface SoSoData {
   etf_flows: EtfFlow[];
   indices: {
     btc_eth: number;
+    btc_eth_chg: number;
     mag7: number;
+    mag7_chg: number;
     fear_greed: number;
   };
   macro_events: MacroEvent[];
@@ -35,7 +37,9 @@ export function getMockSoSoData(): SoSoData {
     ],
     indices: {
       btc_eth: 1847.3,
+      btc_eth_chg: 2.4,
       mag7: 423.1,
+      mag7_chg: 1.8,
       fear_greed: 72
     },
     macro_events: [
@@ -51,15 +55,53 @@ export function getMockSoSoData(): SoSoData {
 }
 
 export async function fetchSoSoData(): Promise<SoSoData> {
+  const data = getMockSoSoData();
   try {
     const res = await fetch('/api/soso-data');
-    const data = getMockSoSoData();
     if (res.ok) {
       const json = await res.json();
-      if (json.etf_real) data.etf_real = json.etf_real;
+      
+      // Parse real ETF flows if available
+      if (json.etf_real) {
+        let etfData = [];
+        if (Array.isArray(json.etf_real.data)) {
+          etfData = json.etf_real.data;
+        } else if (Array.isArray(json.etf_real)) {
+          etfData = json.etf_real;
+        }
+
+        if (etfData.length > 0) {
+          const mappedEtfs = etfData.slice(0, 5).map((e: any) => ({
+            name: e.name || e.fundName || e.ticker || 'Unknown ETF',
+            ticker: e.ticker || 'N/A',
+            flow_7d: parseFloat(e.netInflow || e.flow_7d || e.net_inflow || 0),
+            aum: parseFloat(e.totalNetAssets || e.aum || e.total_net_assets || 0)
+          }));
+          data.etf_flows = mappedEtfs;
+        }
+      }
+
+      // Parse real news/macro events if available
+      if (json.news_real) {
+        let newsData = [];
+        if (Array.isArray(json.news_real.data)) {
+          newsData = json.news_real.data;
+        } else if (Array.isArray(json.news_real)) {
+          newsData = json.news_real;
+        }
+
+        if (newsData.length > 0) {
+          const mappedNews = newsData.slice(0, 5).map((n: any) => ({
+            date: n.publishDate ? new Date(n.publishDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Today',
+            name: n.title || n.newsTitle || 'Market Update',
+            impact: (n.importance || 0) > 3 ? 'HIGH' : (n.importance || 0) > 1 ? 'MED' : 'LOW'
+          }));
+          data.macro_events = mappedNews;
+        }
+      }
     }
     return data;
-  } catch(e) {
-    return getMockSoSoData();
+  } catch {
+    return data;
   }
 }

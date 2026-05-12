@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SoSo Copilot ◈ Institutional Intelligence for Retail Traders
 
-## Getting Started
+**An AI-powered personal finance copilot designed for the On-Chain Retail Trader.** 
 
-First, run the development server:
+SoSo Copilot synthesizes live institutional ETF flows, macro calendar events, and crypto indices from **SoSoValue**, uses **Claude 3.5 Sonnet** to generate actionable daily market signals, and provides a direct pathway for on-chain execution via **SoDEX**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ◈ Value Proposition
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+In a market increasingly dominated by institutional spot ETFs and complex macro variables, retail traders often lack the "big picture" data used by hedge funds. SoSo Copilot bridges this gap by:
+- **Democratizing Data**: Surfacing real-time institutional flow data that was previously hard to find or interpret.
+- **AI-Driven Synthesis**: Using advanced LLMs to process hundreds of data points into a single, actionable market brief.
+- **One-Click Execution**: Closing the loop between research and action with integrated wallet support and simulated trade execution.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ◈ Features
+- **Daily Market Briefs**: Synthesizes complex market data into clear BULLISH/BEARISH/NEUTRAL signals with confidence scores.
+- **AI Research Assistant**: Chat with Claude in real-time about current market conditions, specific ETF flows, or trade ideas.
+- **Live SoSoValue Data**: Integrates real-time Bitcoin spot ETF flows and upcoming macroeconomic events via the SoSoValue API.
+- **Web3 Wallet Integration**: Connect via **Reown AppKit** to view your real on-chain balances and portfolio performance.
+- **SoDEX Execution**: Act on AI-generated research by simulating trades directly through the unified dashboard with mock transaction tracking.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ◈ Setup & Installation
 
-## Learn More
+Follow these steps to run the prototype locally:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone and Install**
+   ```bash
+   git clone https://github.com/Nursca/soso-copilot.git
+   cd soso-copilot
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Environment Configuration**
+   Copy the `.env.example` file to create your local environment file:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Open `.env.local` and add your required API keys:
+   - `ANTHROPIC_API_KEY`: For AI generation (get from [Anthropic Console](https://console.anthropic.com/))
+   - `SOSOVALUE_API_KEY`: For market data (get from [SoSoValue](https://sosovalue.com/api))
+   - `NEXT_PUBLIC_REOWN_PROJECT_ID`: For wallet connection (get from [Reown Cloud](https://cloud.reown.com/))
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Run the Development Server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Deploy on Vercel
+## ◈ Technical Architecture
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Frontend**: Next.js 16 (App Router), React 19, Vanilla CSS (focused on high-signal typography and layout).
+- **Backend**: Serverless Route Handlers using **Vercel AI SDK** for streaming Claude 3.5 Sonnet responses.
+- **Market Data**: **SoSoValue API** for ETF flows and macro events; **CoinGecko API** for real-time 30-day BTC price charts.
+- **Web3 Layer**: `@reown/appkit`, `wagmi`, and `viem` for cross-platform wallet connectivity and on-chain data fetching.
+- **Execution**: Simulated trade flow ("SoDEX") demonstrating how AI insights can trigger on-chain actions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Built for the 2026 SoSoValue Hackathon.*

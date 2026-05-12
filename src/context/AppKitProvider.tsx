@@ -9,13 +9,17 @@ import { cookieToInitialState, WagmiProvider } from 'wagmi'
 
 const queryClient = new QueryClient()
 
-const projectId = process.env.NEXT_PUBLIC_REOWN_PROJECT_ID || 'b56e18d47c72ab683b10814fe9495694'
+const projectId = process.env.NEXT_PUBLIC_REOWN_PROJECT_ID;
+
+if (!projectId) {
+  throw new Error("Missing NEXT_PUBLIC_REOWN_PROJECT_ID. Get one at https://cloud.reown.com/");
+}
 
 // 2. Create a metadata object
 const metadata = {
   name: 'SoSo Copilot',
   description: 'AI-powered personal finance copilot for On-Chain Retail Traders',
-  url: 'http://localhost:3000',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   icons: ['https://avatars.githubusercontent.com/u/179229932']
 }
 
